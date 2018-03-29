@@ -12,7 +12,7 @@ passport.use(new GoogleStrategy({
   clientSecret: keys.googleClientSecret,
   callbackURL: '/auth/google/callback' // route user will be sent to after granting permission
 }, (accessToken, refreshToken, profile, done) => {
-  console.log({ accessToken, refreshToken, profile, done });
+  console.log({ accessToken, refreshToken, profile });
 }));
 
 // googleStrategy has an internal identifier as 'google'
