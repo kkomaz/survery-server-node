@@ -1,9 +1,27 @@
 const express = require('express');
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const keys = require('./config/keys');
+
 const app = express(); // single app.
 
-app.get('/', (req, res) => {
-  res.send('Hello YOU');
-});
+// new instance of GoogleStrategy
+// passport.use (above)
+passport.use(new GoogleStrategy({
+  clientID: keys.googleClientID,
+  clientSecret: keys.googleClientSecret,
+  callbackURL: '/auth/google/callback' // route user will be sent to after granting permission
+}, (accessToken, refreshToken, profile, done) => {
+  console.log({ accessToken, refreshToken, profile, done });
+}));
+
+// googleStrategy has an internal identifier as 'google'
+app.get('/auth/google', passport.authenticate('google', {
+  scope: ['profile', 'email']
+}));
+
+// Returned callback route post user approval
+app.get('/auth/google/callback', passport.authenticate('google'));
 
 /**
  * Heroku Configs
@@ -12,4 +30,6 @@ app.get('/', (req, res) => {
 */
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT);
+app.listen((PORT), () => {
+  console.log('listening on port ' + PORT);
+});
