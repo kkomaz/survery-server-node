@@ -6,6 +6,21 @@ const keys = require('../config/keys');
 // GET the userSchema via users class
 const User = mongoose.model('users');
 
+// Serialize the user
+// user argument is coming from .save returned promise
+passport.serializeUser((user, done) => {
+  done(null, user.id)
+});
+
+// Deserialize user
+// id is coming from the done of serializeUser
+passport.deserializeUser((id, done) => {
+  User.findById(id)
+    .then((user) => {
+      done(null, user);
+    });
+});
+
 // new instance of GoogleStrategy
 // passport.use (above)
 passport.use(new GoogleStrategy({
@@ -13,7 +28,7 @@ passport.use(new GoogleStrategy({
   clientSecret: keys.googleClientSecret,
   callbackURL: '/auth/google/callback' // route user will be sent to after granting permission
 }, (accessToken, refreshToken, profile, done) => {
-  User.find({ googleId: profile.id })
+  User.findOne({ googleId: profile.id })
     .then((existingUser) => {
       if (existingUser) {
         done(null, existingUser); // (error, existingUser)
