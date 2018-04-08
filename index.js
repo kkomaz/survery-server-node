@@ -1,8 +1,14 @@
 const express = require('express');
+const mongoose = require('mongoose');
+const keys = require('./config/keys');
 require('./services/passport');
+require('./models/User');
+
 const app = express(); // single app.
 
 require('./routes/authRoutes')(app);
+
+mongoose.connect(keys.mongoURI);
 
 /**
  * Heroku Configs
