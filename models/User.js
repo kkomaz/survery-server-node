@@ -6,4 +6,5 @@ const userSchema = new Schema({
 });
 
 // New Collection/model called users
+// Loads a schema into mongoose
 mongoose.model('users', userSchema);
