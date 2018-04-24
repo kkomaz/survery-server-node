@@ -7,11 +7,17 @@ module.exports = (app) => {
   }));
 
   // Returned callback route post user approval
-  app.get('/auth/google/callback', passport.authenticate('google'));
+  app.get(
+    '/auth/google/callback',
+    passport.authenticate('google'),
+    (req, res) => {
+      res.redirect('/surveys');
+    }
+  );
 
   app.get('/api/logout', (req, res) => {
     req.logout(); // kills the cookie via passport
-    res.send(req.user);
+    res.redirect('/');
   });
 
   // Test to make sure o-auth and login flow works.
