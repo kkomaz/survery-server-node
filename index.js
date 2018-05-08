@@ -23,6 +23,23 @@ app.use(passport.session());
 require('./routes/authRoutes')(app);
 require('./routes/billingRoutes')(app);
 
+if (process.env.NODE_ENV === 'production') {
+  /**
+   * Express will serve up production assets.  Like our main.js file, or main.css file!
+   * If a route handler is not set up, look into client/build and see if matches up with whatever the request is asking for.
+  */
+  app.use(express.static('client/build'));
+
+  /**
+   * Express will serve up the index.html file if it doesn't recognize the route
+   * Serve the HTML document.  Absolute catch-all.
+  */
+  const path = require('path');
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  });
+}
+
 mongoose.connect(keys.mongoURI);
 
 /**
