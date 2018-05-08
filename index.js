@@ -24,6 +24,7 @@ require('./routes/authRoutes')(app);
 require('./routes/billingRoutes')(app);
 
 if (process.env.NODE_ENV === 'production') {
+  console.log('running production');
   /**
    * Express will serve up production assets.  Like our main.js file, or main.css file!
    * If a route handler is not set up, look into client/build and see if matches up with whatever the request is asking for.
