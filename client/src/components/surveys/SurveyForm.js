@@ -3,6 +3,7 @@ import { reduxForm, Field } from 'redux-form'; // Nearly identical to connect he
 import _ from 'lodash';
 import formFields from './formFields';
 import SurveyField from './SurveyField';
+import { Link } from 'react-router-dom';
 
 class SurveyForm extends Component {
   renderFields() {
@@ -23,7 +24,11 @@ class SurveyForm extends Component {
       <div>
         <form onSubmit={this.props.handleSubmit(values => console.log(values))}>
           {this.renderFields()}
-          <button type="submit">Send</button>
+          <Link to="/surveys" className="red btn-flat white-text">Cancel</Link>
+          <button type="submit" className="teal btn-flat right white-text">
+            Send
+            <i className="material-icons right">done</i>
+          </button>
         </form>
       </div>
     );
