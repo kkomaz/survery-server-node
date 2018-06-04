@@ -1,14 +1,22 @@
 import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form'; // Nearly identical to connect helper.  Allows component to talk to redux store
+import _ from 'lodash';
+import formFields from './formFields';
 import SurveyField from './SurveyField';
 
 class SurveyForm extends Component {
   renderFields() {
-    return (
-      <div>
-        <Field type="text" name="title" component={SurveyField} />
-      </div>
-    )
+    return _.map(formFields, ({ label, name }) => {
+      return (
+        <Field
+          component={SurveyField}
+          type="text"
+          label={label}
+          name={name}
+          key={name}
+        />
+      )
+    });
   }
   render() {
     return (
