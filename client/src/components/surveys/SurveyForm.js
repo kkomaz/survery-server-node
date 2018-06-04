@@ -4,6 +4,7 @@ import _ from 'lodash';
 import formFields from './formFields';
 import SurveyField from './SurveyField';
 import { Link } from 'react-router-dom';
+import validateEmails from '../../utils/validateEmails';
 
 class SurveyForm extends Component {
   renderFields() {
@@ -35,6 +36,21 @@ class SurveyForm extends Component {
   }
 }
 
+function validate(values) {
+  const errors = {};
+
+  errors.recipients = validateEmails(values.recipients || '');
+
+  _.each(formFields, ({ name }) => {
+    if (!values[name]) {
+      errors[name] = 'You must provide a value';
+    }
+  });
+
+  return errors;
+}
+
 export default reduxForm({
+  validate,
   form: 'surveyForm',
 })(SurveyForm);
